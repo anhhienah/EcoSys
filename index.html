@@ -1,0 +1,1292 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  
+ 
+  
+  <script src="components/loader.js"></script>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="lib/onsenui/js/angular-onsenui.min.js"></script>
+  <script src="js/default.js"></script>   
+  <script src="js/jquery.min.js"></script>
+ 
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    ons.bootstrap().controller('AppController', function($scope) {
+        this.load = function(page) {
+          $scope.splitter.content.load(page);
+          $scope.splitter.right.close();
+        };
+
+        this.toggle = function() {
+          $scope.splitter.right.toggle();
+        };
+      });
+   
+  </script>
+</head>
+<body>
+
+<ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
+  <ons-page>
+    <ons-splitter id="appSplitter">
+      <ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="left" collapse="" width="260px"></ons-splitter-side>
+      <ons-splitter-content page="tabbar.html"></ons-splitter-content>
+    </ons-splitter>
+  </ons-page>
+</ons-navigator>
+
+<template id="tabbar.html">
+  <ons-page id="tabbar-page">
+    <ons-toolbar style="background-color: #3e6ea8; height: 55px;">
+      <div class="center"><img src="img/logobct.png" style="width:197px; height:39px; padding-top:5px;" alt="" /></div>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.toggleMenu()" component="button/menu">
+          <ons-icon icon="ion-navicon, material:md-menu" size="30px" style="color:#fff; margin-top:-10px;"></ons-icon>
+        </ons-toolbar-button>
+        
+      </div>
+    </ons-toolbar>
+    <ons-tabbar swipeable id="appTabbar" position="bottom" >
+      <ons-tab label="Trang chủ" icon="ion-ios-home-outline" page="home.html" active ></ons-tab>
+      <ons-tab label="Hướng dẫn" icon="ion-ios-paper-outline" page="guides.html"></ons-tab>
+      <ons-tab label="Hỏi đáp" icon="ion-ios-help-outline" page="faq.html" ></ons-tab>
+      <ons-tab label="Danh sách C/O" icon="ion-ios-book-outline" page="news.html" ></ons-tab>
+      <ons-tab label="Tổ chức" icon="ion-ios-cog-outline" page="department.html" ></ons-tab>
+      <!-- an tabbar
+      <ons-tab label="Tổ chức" icon="ion-ios-cog-outline" page="html/test.html" ></ons-tab>
+      <ons-tabbar swipeable id="appTabbar" position="auto" >
+      <ons-tab label="Home" icon="ion-home" page="home.html" active style="display:none;"></ons-tab>
+      
+      <ons-tab label="Forms" icon="ion-edit" page="forms.html" style="display:none;"></ons-tab>
+      <ons-tab label="Animations" icon="ion-film-marker" page="animations.html" style="display:none;"></ons-tab>
+        </ons-tabbar-->
+    </ons-tabbar>
+
+    <!--script>
+      ons.getScriptPage().addEventListener('prechange', function(event) {
+        if (event.target.matches('#appTabbar')) {
+          event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute('label');
+        }
+      });
+    </script-->
+  </ons-page>
+</template>
+
+<ons-alert-dialog id="dialogerror">
+    <div class="alert-dialog-title"><i class="fa fa-fw fa-exclamation-triangle"></i> Error</div>
+    <div class="alert-dialog-content">
+        <p id="pesanerror1"></p>
+    </div>
+    <button class="alert-dialog-button" onclick="hideDialog('dialogerror')">OK</button>
+</ons-alert-dialog> 
+
+
+<template id="sidemenu.html">
+  <ons-page>
+    <div class="profile-pic" >
+      <img src="img/logoecosys.jpg">
+    </div>
+
+    <ons-list>
+        <ons-list-item onclick="fn.loadView(0)" >
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-home-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Trang chủ
+        </div>
+        
+      </ons-list-item>
+      <ons-list-item onclick="fn.loadView(1)">
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-paper-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Hướng dẫn
+        </div>
+        </ons-list-item>
+      <ons-list-item onclick="fn.loadView(2)">
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-help-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Hỏi đáp
+        </div>
+       </ons-list-item>
+      
+      <ons-list-item onclick="fn.loadView(3)">
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-book-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Tin tức
+        </div>
+      </ons-list-item>
+      
+      <ons-list-item onclick="fn.loadView(4)">
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-cog-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Danh sách tổ chức
+        </div>
+      </ons-list-item>
+      
+      <ons-list-item onclick="fn.pushPage({'id': 'introduce.html', 'title': 'Giới thiệu'}, {'animation':'slide'})">
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-eye-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Giới thiệu
+        </div>
+        <div class="right">
+          <ons-icon icon="fa-link"></ons-icon>
+        </div>
+      </ons-list-item>
+      <ons-list-item onclick="fn.pushPage({'id': 'contact.html', 'title': 'Liên hệ'}, {'animation':'slide'})">
+        <div class="left">
+          <ons-icon fixed-width class="list-item__icon" icon="ion-ios-email-outline"></ons-icon>
+        </div>
+        <div class="center">
+          Liên hệ
+        </div>
+        <div class="right">
+          <ons-icon icon="fa-link"></ons-icon>
+        </div>
+      </ons-list-item>
+    </ons-list>
+
+    <script>
+      ons.getScriptPage().onInit = function() {
+        // Set ons-splitter-side animation
+        this.parentElement.setAttribute('animation', ons.platform.isAndroid() ? 'overlay' : 'reveal');
+      };
+    </script>
+
+    <style>
+      .profile-pic {
+        width: 200px;
+        margin: 20px auto 10px;
+        
+      }
+
+      .profile-pic > img {
+        display: block;
+        max-width: 100%;
+      }
+
+      ons-list-item {
+        color: #444;
+      }
+    </style>
+  </ons-page>
+</template>
+
+<template id="home.html">
+  <ons-page>
+    
+    <ons-card >
+        <div class="title">
+            <h3><strong>TRA CỨU C/O</strong></h3>
+        </div>
+        <div class="content">
+            <ons-list>
+              <ons-list-item class="input-items" modifier="nodivider">
+                <div class="left">
+                  <ons-icon icon="ion-ios-barcode-outline" class="list-item__icon"></ons-icon>
+                </div>
+                <label class="center">
+                <ons-input id="taxcode-input" float maxlength="13" placeholder="Mã số thuế"></ons-input>
+              </label>
+              </ons-list-item>
+              <ons-list-item class="input-items" modifier="nodivider">
+                <div class="left">
+                  <ons-icon icon="ion-ios-compose-outline" class="list-item__icon"></ons-icon>
+                </div>
+                <label class="center">
+                <ons-input id="certificatenumber-input" maxlength="17" placeholder="Số C/O"></ons-input>
+              </label>
+              </ons-list-item>
+            </ons-list>
+            <section style="">
+                <ons-button modifier="large" onclick="fn.searCO()"><ons-icon icon="ion-ios-search" class="list-item__icon"></ons-icon>Tìm kiếm</ons-button>
+            </section>
+        </div>
+    </ons-card>
+    <ons-card >
+        <div class="title">
+            <h3><strong>HỖ TRỢ TRỰC TUYẾN</strong></h3>
+        </div>
+        <div class="content">
+            <ons-list>
+              <ons-list-item >
+                <div class="left">
+                  <ons-icon icon="ion-ios-telephone-outline" class="list-item__icon"></ons-icon>
+                </div>
+                <label class="center">
+                (024) 6270 5538
+                </label>
+              </ons-list-item>
+              <ons-list-item >
+                <div class="left">
+                  <ons-icon icon="ion-ios-telephone-outline" class="list-item__icon"></ons-icon>
+                </div>
+                <label class="center">
+                (024) 2220 5513
+              </label>
+              </ons-list-item>
+              
+              <ons-list-item >
+                <div class="left">
+                  <ons-icon icon="ion-ios-email-outline" class="list-item__icon"></ons-icon>
+                </div>
+                <label class="center">
+                dangkyca@ecomviet.vn
+              </label>
+              </ons-list-item>
+              
+              <ons-list-item modifier="nodivider">
+                <div class="left" style="color:red; ">
+                  Phản ánh chất lượng: &nbsp;
+                </div>
+                <label class="center">
+                0904 338 398
+              </label>
+              </ons-list-item> 
+            </ons-list>
+            
+        </div>
+    </ons-card>
+    <ons-card >
+        <div class="content">
+            <ons-list>
+              <ons-list-item modifier="nodivider">
+                <div class="left">
+                  <ons-icon icon="ion-ios-location-outline" class="list-item__icon" size="30px"></ons-icon>
+                </div>
+                <label class="center">
+                <b>Bộ Công Thương</b> <i>25 Ngô Quyền, Hoàn Kiếm, Hà Nội</i>
+                </label>
+              </ons-list-item>
+            </ons-list>
+            
+        </div>
+        
+    </ons-card>
+    
+    <style>
+      .intro { line-height: 1px;
+      }
+
+      ons-card {
+        cursor: pointer;
+        color: #333;
+      }
+
+      .card__title,
+      .card--material__title {
+        font-size: 20px;
+        border-bottom: solid 1px #ff0a00;
+      }
+      .card__title h3 strong,
+      .card--material__title {
+      }
+            
+    </style>
+    
+  </ons-page> 
+</template>
+
+<!-- Ket qua tim kiem -->
+
+<template id="result.html">
+  <ons-page id="dialogs-page">
+    <ons-toolbar>
+      <div class="left">
+        <ons-back-button></ons-back-button>
+      </div>
+      <div class="center"></div>
+      
+    </ons-toolbar>
+    <ons-card >
+        <div class="title">
+            <h3><strong>THÔNG TIN TRA CỨU</strong></h3>
+        </div>
+        <div class="content">
+            <ons-list class="search-info">
+             <ons-list-item >
+                <div class="left" style="color:red; ">
+                  Mã số thuế &nbsp;
+                </div>
+                <div class="tax">          
+                </div>
+              </ons-list-item> 
+              <ons-list-item >
+                <div class="left" style="color:red; ">
+                  Số C/O &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="certificatenumber">          
+                </div>
+              </ons-list-item>
+            </ons-list>
+            
+        </div>
+    </ons-card>
+     <ons-card >
+        <div class="title">
+            <h3><strong>THÔNG TIN C/O</strong></h3>
+        </div>
+        <div class="content">
+            <!--div>
+                <ons-icon icon="ion-ios-information-outline" class="list-item__icon " style="color:red;" size="26px"></ons-icon>&nbsp;Số C/O không tồn tại trong hệ thống!
+            </div-->
+            <ons-list id="datalist-coinfo">
+            </ons-list>
+        </div>
+    </ons-card>
+    
+    <script>
+     ons.getScriptPage().onInit = function () {
+        //var number = 'VN-IN 15/02/02362';
+        //var taxcode = '03014192421';
+        var number = this.data.certificatenumber;
+        var taxcode = this.data.taxcode;
+
+        this.querySelector('ons-list div.certificatenumber').textContent = number;
+        this.querySelector('ons-list div.tax').textContent = taxcode;
+        console.log(number);
+        console.log(taxcode);
+       //03014192421' }, { CertificateNumber: 'VN-BG 15/02/28193' }),
+       
+       
+        $.ajax({
+        type: "GET",
+        url: 'http://test.ecosys.gov.vn/ajax/app/searchco/data.jsx',
+        dataType: "JSON",
+        contentType: 'application/json; charset=utf-8',
+        data: $.extend({ CompanyTaxCode: taxcode }, { CertificateNumber: number }),
+        timeout: 10000,
+        cache: false,
+        success: function(result){
+            if (!result) return;
+            var page = event.target;
+            $('#prosesloadingproduk').hide();
+            var mes = result.message; 
+            console.log(result.message);
+          console.log(result.note);
+            if(mes == 0)// success
+            {
+              
+                var item = result.data;
+                 console.log( item.StatusName);
+
+            var listItem = ons.createElement('<ons-list><ons-list-item class="mlm20">'
+                +'<div class="left w150">'
+                +'  <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Trạng thái</ons-icon>'
+                +'</div>'
+                +'<label class="center">'+ item.StatusName +'</label>'
+                +' </ons-list-item>'
+                
+                +' <ons-list-item class="mlm20" >'
+                +'    <div class="left w150">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Form</ons-icon>'
+                +'    </div>'
+                +'    <label class="center">'
+                +    item.FormName +
+                +'  </label> '
+                +'  </ons-list-item>'
+                
+                +'  <ons-list-item class="mlm20" >'
+                +'    <div class="left w150">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Ngày gửi</ons-icon>'
+                +'    </div>'
+                +'    <label class="center">'
+                +    item.SubmitDate +
+                +'  </label>'
+                +'  </ons-list-item>'
+                
+                +'  <ons-list-item class="mlm20" >'
+                +'    <div class="left w150">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Ngày cấp</ons-icon>'
+                +'    </div>'
+                +'    <label class="center">'
+                +    item.CertificateDate +
+                +'  </label>'
+                +'  </ons-list-item>'
+                
+                +'  <ons-list-item class="mlm20" >'
+                +'    <div class="left w150">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Ngày duyệt</ons-icon>'
+                +'    </div>'
+                +'    <label class="center">'
+                +    item.CertificateReviewDate +
+                +'  </label>'
+                +'  </ons-list-item>'
+                  
+                +'  <ons-list-item class="mlm20" >'
+                +'    <div class="left">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Ngày cấp phép</ons-icon>'
+                +'    </div>'
+                +'    <label class="center">'
+                +    item.CertificateApproveDate +
+                +'  </label>'
+                +'  </ons-list-item>'
+                  
+                +' <div class="mlm5">'
+                +'    <div class="">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Đơn vị cấp</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.DepartmentName +
+                +'  </div>'
+                +'  </div>'
+                  
+                +'  <div class="" >'
+                +'    <div class=""> '
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Doanh nghiệp</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.CompanyName +
+                +'  </div>'
+                +'  </div>'
+                
+                +'  <div class="" >'
+                +'    <div class="">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Địa chỉ</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.CompanyAddress +
+                +'  </div>'
+                +'  </div>'
+                 
+                +'  <div class="" >'
+                +'    <div class="">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Nước nhập khẩu</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.MarketName +
+                +'  </div>'
+                +'  </div>'
+                
+                +'  <div class="" >'
+                +'    <div class=""> '
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Doanh nghiệp nhập khẩu</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.CompanyNameImport +
+                +'  </div>'
+                +'  </div>'
+                
+                +'  <div class="" >'
+                +'    <div class="">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Địa chỉ DN nhập khẩu</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.CompanyAddressImport +
+                +'  </div>'
+                +'  </div>'
+                
+                +'  <div class="" >'
+                +'    <div class="">'
+                +'      <ons-icon icon="ion-ios-pricetags-outline" class="list-item__icon bold-black" size="16px">&nbsp;Lý do (nếu có)</ons-icon>'
+                +'    </div>'
+                +'    <div class="textcontent">'
+                +    item.Reason +
+                +'  </div>'
+                +'  </div>'
+                
+                +'</ons-list>');
+                                        
+                var onlist = document.getElementById('datalist-coinfo');
+                onlist.appendChild(listItem); 
+            }
+              
+        },   
+            error: function(xhr, textStatus, thrownError) {
+                //$('#prosesloadingproduk').hide();
+                //$('#dialogerror').show();
+                //$("#pesanerror1").html(xhr.error);
+                //console.log("error,",xhr.error);
+            }
+        });
+    };
+    
+
+    </script>
+    <style>
+        .w100{width: 100px;}
+        .w120{width: 120px;}
+        .w150{width: 150px;}
+        .mlm20{margin-left: -20px;}
+        .mlm25{margin-left: -25px;}
+        .mlm5{margin-left: -5px;}
+        .bold-black{font-weight: bold; color: #111;}
+        .textcontent{padding: 10px;}
+    </style>
+    </ons-page>
+</template>
+    
+<!-- Huong dan -->
+<template id="guides.html">
+  <ons-page id="forms-page">
+    <ons-card >
+        <div class="title">
+            <h3><strong>HƯỚNG DẪN</strong></h3>
+        </div>
+        <div class="content">
+            <ons-list id="datalist-guides">
+            </ons-list>
+        </div>
+    </ons-card>
+    <style>
+        .clear{clear: both;}
+        .news-item{border: 1px dashed #cdcdcd;border-radius: 5px;padding: 10px; margin-bottom: 10px;}
+        .news-img{padding-bottom: 10px;}
+        .news-img > img{ max-width: 100%; }
+        .news-title{ font-weight: bold; }
+    </style>  
+    <script>
+    ons.getScriptPage().onInit = function() {
+        $.ajax({
+        type: "GET",
+        url: 'http://test.ecosys.gov.vn/ajax/app/guides/data.jsx',
+        dataType: "JSON",
+        contentType: 'application/json; charset=utf-8',
+        //data: $.extend({ aId: 172113 }, { sort: 0 }, { p: 1 }),
+        timeout: 10000,
+        cache: false,
+        success: function(result){
+            if (!result) return;
+            var page = event.target;
+            //$('#prosesloadingproduk').hide(); 
+            
+            var mes = result.message; 
+            if(mes == 0)// success
+            {
+            var list = result.data.ListNews;
+            
+            $.each(list, function(index, item){
+                var id = item.Id;
+                var title = item.Title;  
+                var img = item.Images; 
+               
+                var imgdefault = 'http://res.ecosys.gov.vn/Homepage/images/img2.jpg';
+                if(img == '') img = imgdefault;
+               
+                var listItem = ons.createElement('<ons-list-item class="news-item tombolmenu" modifier="nodivider" onclick="loadGuideDetail('+ id + ')">'
+                                + '<div class="news-img">' + '<img src="' + img + '" alt="" />' 
+                                + '</div>' + '<div class="news-title">' + title + '</div>');
+                
+                                
+                //listItem.setAttribute('onclick', "bukapaket()");
+                
+                var onlist = document.getElementById('datalist-guides');
+                onlist.appendChild(listItem); 
+                 
+            });
+            }
+        },   
+            error: function(xhr, textStatus, thrownError) {
+                //$('#prosesloadingproduk').hide();
+                //$('#dialogerror').show();
+                //$("#pesanerror1").html(xhr.error);
+                //console.log("error,",xhr.error);
+            }
+        });
+    };
+    
+    function loadGuideDetail(dId) {
+        document.getElementById('appNavigator').pushPage('guidedetail.html', {data: {docId: dId}});
+        
+    }
+    </script>
+  </ons-page>
+</template>
+
+<template id="guidedetail.html">
+  <ons-page id="guidedetail-page">
+  <ons-toolbar>
+      <div class="left">
+        <ons-back-button></ons-back-button>
+      </div>
+      <div class="center"></div>
+      
+    </ons-toolbar>
+    <ons-card >
+        <div class="title">
+            <h3><strong>HƯỚNG DẪN</strong></h3>
+        </div>
+        <div class="content">
+            <ons-list id="datalist-guidedetail">
+            </ons-list>
+        </div>
+    </ons-card>
+    
+    <style>
+        .clear{clear: both;}
+        .news-item{border: 1px dashed #cdcdcd;border-radius: 5px;padding: 10px; margin-bottom: 10px;}
+        .news-img{padding-bottom: 10px;}
+        .news-img > img{ max-width: 100%; }
+        .news-title{ font-weight: bold; }
+        .detail{}
+        #datalist-guidedetail > img{ max-width: 100%; }
+    </style>  
+    <script>
+   ons.getScriptPage().onInit = function () {
+        var id = this.data.docId;
+              
+        $.ajax({
+        type: "GET",
+        url: 'http://test.ecosys.gov.vn/ajax/app/newsdetail/data.jsx',
+        dataType: "JSON",
+        contentType: 'application/json; charset=utf-8',
+        data: { DocId: id },
+        timeout: 10000,
+        cache: false,
+        success: function(result){
+            if (!result) return;
+            var page = event.target;
+            //$('#prosesloadingproduk').hide();
+            var mes = result.message; 
+            if(mes == 0)// success
+            {
+                var item = result.data;
+                var id = item.Id;
+                var title = item.Title;  
+                var img = item.Images; 
+                var publishAt = item.PublishAt;
+                var detail = item.Detail;
+               
+                var imgdefault = 'http://res.ecosys.gov.vn/Homepage/images/img2.jpg';
+                if(img == '') img = imgdefault;
+               
+                
+                var listItem = ons.createElement('<ons-list-item class="news-item tombolmenu" modifier="nodivider" >'
+                                                    + '</div>' + '<div class="news-title">' + title + '</div>'
+                                                    + '<div class="news-img">' + '<img src="' + img + '" alt="" />'
+                                                    + '<div><ons-icon icon="ion-ios-alarm-outline" class="list-item__icon " size="16px"> </ons-icon> <i> ' + publishAt + '</i> </div>'
+                                                    + '<div class="detail"> ' + detail + ' </div>');                        
+                                        
+                var onlist = document.getElementById('datalist-guidedetail');
+                onlist.appendChild(listItem); 
+            }
+              
+        },   
+            error: function(xhr, textStatus, thrownError) {
+                //$('#prosesloadingproduk').hide();
+                //$('#dialogerror').show();
+                //$("#pesanerror1").html(xhr.error);
+                //console.log("error,",xhr.error);
+            }
+        });
+    };
+    
+
+    </script>
+  </ons-page>
+</template>
+
+<!-- Tin tuc -->
+<template id="news.html">
+  <ons-page id="forms-page">
+    <ons-card >
+        <div class="title">
+            <h3><strong>TIN TỨC</strong></h3>
+        </div>
+        <div class="content">            
+            <ons-list id="datalist-news">
+            </ons-list>
+              
+            <div style="display:none;" id="pagenumber" data-number="0"> 
+            </div>
+            <section style="">
+                <ons-button modifier="large" id="news-page" onclick="loadNewsMore()"><ons-icon icon="ion-ios-cloud-download-outline" class="list-item__icon"></ons-icon>Xem thêm</ons-button>
+                <ons-progress-bar indeterminate id="prosesloadingproduk" style="text-align: center;margin-top:10px;" ></ons-progress-circular>
+            </section>
+            
+        </div> 
+    </ons-card>
+    <style>
+        .clear{clear: both;}
+        .news-item{border: 1px dashed #cdcdcd;border-radius: 5px;padding: 10px; margin-bottom: 10px;}
+        .news-img{padding-bottom: 10px;}
+        .news-img > img{ max-width: 100%; }
+        .news-title{ font-weight: bold; }
+    </style>  
+    <script>
+    ons.getScriptPage().onInit = function() {
+        loadNewsMore();
+        
+    };
+    
+    function loadNewsDetail(dId) {
+        document.getElementById('appNavigator').pushPage('newsdetail.html', {data: {docId: dId}});
+        
+    }
+    
+    function loadNewsMore()
+    {
+        var page = parseInt($('#pagenumber').attr('data-number'));     
+        var curPage = 0;
+        if (!page || page == 0) curPage = 1;
+        else curPage += page;
+                
+        $.ajax({
+        type: "GET",
+        url: 'http://test.ecosys.gov.vn/ajax/app/news/data.jsx',
+        dataType: "JSON",
+        contentType: 'application/json; charset=utf-8',
+        data: $.extend({ Page: curPage }, { CateAlias: 'tin-tuc' }),
+        timeout: 10000,
+        cache: false,
+        beforeSend: function () {
+            $('#prosesloadingproduk').show();
+        },
+        
+        success: function(result){  
+            if (!result) return;
+            var page = event.target;
+            $('#prosesloadingproduk').hide(); 
+            
+            var mes = result.message; 
+            if(mes == 0)// success
+            {
+            var list = result.data.ListNews;
+            var totalPage = result.data.TotalPage;
+            
+            if(curPage >= totalPage) $('#news-page').hide();
+            
+            $('#pagenumber').attr('data-number', ++curPage);
+            
+            $.each(list, function(index, item){
+                var id = item.Id;
+                var title = item.Title;  
+                var img = item.Images; 
+               
+                var imgdefault = 'http://res.ecosys.gov.vn/Homepage/images/img2.jpg';
+                if(img == '') img = imgdefault;
+               
+                var listItem = ons.createElement('<ons-list-item class="news-item tombolmenu" modifier="nodivider"  onclick="loadNewsDetail('+ id + ')">'
+                                + '<div class="news-img">' + '<img src="' + img + '" alt=""  />' 
+                               + '</div>' + '<div class="news-title">' + title + '</div>');
+                 
+                                
+                var onlist = document.getElementById('datalist-news');
+                onlist.appendChild(listItem); 
+                 
+            });
+            }
+        },   
+            error: function(xhr, textStatus, thrownError) {
+                //$('#prosesloadingproduk').hide();
+                //$('#dialogerror').show();
+                //$("#pesanerror1").html(xhr.error);
+                //console.log("error,",xhr.error);
+            }
+        });
+    }
+    </script>
+  </ons-page>
+</template>
+
+<template id="newsdetail.html">
+  <ons-page id="guidedetail-page">
+  <ons-toolbar>
+      <div class="left">
+        <ons-back-button></ons-back-button>
+      </div>
+      <div class="center"></div>
+      
+    </ons-toolbar>
+    <ons-card >
+        <div class="title">
+            <h3><strong>TIN TỨC</strong></h3>
+        </div>
+        <div class="content">
+            <ons-list id="datalist-newsdetail">
+            </ons-list>
+        </div>
+    </ons-card>
+    
+    <style>
+        .clear{clear: both;}
+        .news-item{border: 1px dashed #cdcdcd;border-radius: 5px;padding: 10px; margin-bottom: 10px;}
+        .news-img{padding-bottom: 10px;}
+        .news-img > img{ max-width: 100%; }
+        .news-title{ font-weight: bold; }
+        .detail{}
+        #datalist-newsdetail > img{ max-width: 100%; }
+    </style>  
+    <script>
+   ons.getScriptPage().onInit = function () {
+        var id = this.data.docId;
+              
+        $.ajax({
+        type: "GET",
+        url: 'http://test.ecosys.gov.vn/ajax/app/newsdetail/data.jsx',
+        dataType: "JSON",
+        contentType: 'application/json; charset=utf-8',
+        data: { DocId: id },
+        timeout: 10000,
+        cache: false,
+        success: function(result){
+            if (!result) return;
+            var page = event.target;
+            //$('#prosesloadingproduk').hide();
+            var mes = result.message; 
+            if(mes == 0)// success
+            {
+                var item = result.data;
+                var id = item.Id;
+                var title = item.Title;  
+                var img = item.Images; 
+                var publishAt = item.PublishAt;
+                var detail = item.Detail;
+               
+                var imgdefault = 'http://res.ecosys.gov.vn/Homepage/images/img2.jpg';
+                if(img == '') img = imgdefault;
+               
+                
+                var listItem = ons.createElement('<ons-list-item class="news-item tombolmenu" modifier="nodivider" >'
+                                                    + '</div>' + '<div class="news-title">' + title + '</div>'
+                                                    + '<div class="news-img">' + '<img src="' + img + '" alt="" />'
+                                                    + '<div><ons-icon icon="ion-ios-alarm-outline" class="list-item__icon " size="16px"> </ons-icon> <i> ' + publishAt + '</i> </div>'
+                                                    + '<div class="detail"> ' + detail + ' </div>');                        
+                                        
+                var onlist = document.getElementById('datalist-newsdetail');
+                onlist.appendChild(listItem); 
+            }
+              
+        },   
+            error: function(xhr, textStatus, thrownError) {
+                //$('#prosesloadingproduk').hide();
+                //$('#dialogerror').show();
+                //$("#pesanerror1").html(xhr.error);
+                //console.log("error,",xhr.error);
+            }
+        });
+    };
+    
+
+    </script>
+  </ons-page>
+</template>
+
+<!-- To chuc -->
+<template id="department.html">
+  <ons-page id="forms-page">
+    <ons-card >
+        <div class="title">
+            <h3><strong>DANH SÁCH TỔ CHỨC</strong></h3>
+        </div>
+        <div class="content">            
+            <ons-list id="datalist-depart"> 
+            </ons-list>
+            
+            <!--ons-list id="datalist01">
+                <ons-list-item class="depart-item">
+                <div class="depart-name">
+                  Phòng Quản lý XNK Hồ Chí Minh
+                </div>
+                <div class="depart-content" >
+                    <ons-list style="background: #eeefff; margin-left:-20px;">
+                      
+                      <ons-list-item >
+                        <div class="left">
+                          <ons-icon icon="ion-ios-telephone-outline" class="list-item__icon"></ons-icon>
+                        </div>
+                        <label class="center">
+                        (024) 2220 5513
+                      </label>
+                      </ons-list-item>
+                      
+                      <ons-list-item >
+                        <div class="left">
+                          <ons-icon icon="ion-ios-email-outline" class="list-item__icon"></ons-icon>
+                        </div>
+                        <label class="center">
+                        dangkyca@ecomviet.vn
+                      </label>
+                      </ons-list-item>
+                      <ons-list-item >
+                        <div class="left">
+                          <ons-icon icon="ion-ios-location-outline" class="list-item__icon"></ons-icon>
+                        </div>
+                        <label class="center">
+                        Tầng 4, 25 Ngô Quyền, Hoàn Kiếm, Hà Nội 
+                        </label>
+                      </ons-list-item>
+                    </ons-list>
+                </div>
+              </ons-list-item>
+            </ons-list-->
+        </div> 
+    </ons-card>
+    <style>
+        .clear{clear: both;}
+        .depart-item{background: #eeefff; margin-bottom: 10px;width: 100%;}
+        .depart-name{background: #1f73bb; margin-left: -20px;margin-top: -20px;margin-right: -10px; line-height: 40px;
+        font-weight: bold; color: #fff; width: 100%;padding: 20px;}
+        .bg-white{background: #eeefff;}
+        .depart-content{width: 100%;}
+        
+    </style>  
+    <script>
+    ons.getScriptPage().onInit = function() {
+        $.ajax({
+        type: "GET",
+        url: 'http://test.ecosys.gov.vn/ajax/app/departments/data.jsx',
+        dataType: "JSON",
+        contentType: 'application/json; charset=utf-8',
+        //data: $.extend({ aId: 172113 }, { sort: 0 }, { p: 1 }),
+        timeout: 10000,
+        cache: false,
+        success: function(result){ 
+            if (!result) return;
+            var page = event.target;
+            var list = result.data.ListDepartments;
+            
+            $.each(list, function(index, item){
+                var id = item.Id;
+                var name = item.Name; 
+                var address = item.Address; 
+                var email = item.Email; 
+                var phone = item.Phone;                
+                
+                var listItem = ons.createElement('<ons-list-item class="depart-item">'
+                +'<div class="depart-name">'
+                  + name
+                +'</div>'
+                +'<div class="depart-content" >'
+                +'    <ons-list style="background: #eeefff; margin-left:-20px;">'
+                +'      <ons-list-item >'
+                +'        <div class="left">'
+                +'          <ons-icon icon="ion-ios-telephone-outline" class="list-item__icon"></ons-icon>'
+                +'        </div>'
+                +'        <label class="center">'
+                +        phone
+                +'      </label>'
+                +'      </ons-list-item>'
+                +'      <ons-list-item >'
+                +'        <div class="left">'
+                +'          <ons-icon icon="ion-ios-email-outline" class="list-item__icon"></ons-icon>'
+                +'        </div>'
+                +'        <label class="center">'
+                +        email
+                +'      </label>'
+                +'      </ons-list-item>'
+                +'      <ons-list-item >'
+                +'        <div class="left">'
+                +'          <ons-icon icon="ion-ios-location-outline" class="list-item__icon"></ons-icon>'
+                +'        </div>'
+                +'        <label class="center">'
+                +        address
+                +'        </label>'
+                +'      </ons-list-item>'
+                +'    </ons-list>'
+                +'</div>'
+                +'</ons-list-item>'); 
+                                        
+                var onlist = document.getElementById('datalist-depart');
+                onlist.appendChild(listItem); 
+                 
+            });
+        },   
+            error: function(xhr, textStatus, thrownError) {
+                //$('#prosesloadingproduk').hide();
+                //$('#dialogerror').show();
+                //$("#pesanerror1").html(xhr.error);
+                //console.log("error,",xhr.error);
+            }
+        });
+    };
+    </script>
+  </ons-page>
+</template>
+
+<template id="faq.html">
+  <ons-page id="forms-page-faq">
+    <ons-card >
+        <div class="title">
+            <h3><strong>HỎI ĐÁP</strong></h3>
+        </div>
+        <div class="content">
+            <div class="faq-list">
+                <div class="faq-item">
+                        <a href="#" class="faq-item-question">1. Để mua bộ thiết bị chữ ký số, tôi cần phải
+                            làm gì? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Để mua bộ thiết bị chữ ký số, Quý Doanh nghiệp truy cập địa chỉ:<br>
+                               <a href="http://ecosys.gov.vn/Homepage/VSignRegister.aspx" target="_blank"><b> http://ecosys.gov.vn/Homepage/VSignRegister.aspx</b></a><br>
+                                <b>Lưu ý:</b> Hồ sơ gia hạn bao gồm:<br>
+                                1. Đơn đăng ký
+                                <br>
+                                2. Ủy nhiệm chi hoặc Giấy nộp tiền<br>
+                                3. Giấy phép kinh doanh (có dấu)<br>
+                                4. Chứng minh thư (hoặc Hộ chiếu) của người được cấp chữ ký điện tử<br>
+                                <br>
+                                (Đơn đăng ký, báo giá thiết bị bạn có thẻ tải về trong phần download tại trang chủ
+                                ecosys, trên báo giá có thông tin số tài khoản để thanh toán cho thẻ chữ ký số)<br>
+                                Để việc gia hạn bộ thiết bị chữ ký số có thể hoàn thành nhanh chóng, Doanh nghiệp
+                                nên chuẩn bị đủ 04 giấy tờ trên trước khi thực hiện đăng ký gia hạn.
+                            </p>
+                        </div>
+                    </div>
+                 <div class="faq-item">
+                        <a href="#" class="faq-item-question">2. Để gia hạn thiết bị chữ ký số, tôi cần phải
+                            làm gì? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Để gia hạn bộ thiết bị chữ ký số, Quý Doanh nghiệp truy cập địa chỉ:<br>
+                               <a href="http://ecosys.gov.vn/Homepage/VSignRegister.aspx" target="_blank"><b> http://ecosys.gov.vn/Homepage/VSignRegister.aspx</b></a><br>
+                                <b>Lưu ý:</b> Hồ sơ gia hạn bao gồm:<br>
+                                1. Đơn đăng ký
+                                <br>
+                                2. Ủy nhiệm chi hoặc Giấy nộp tiền<br>
+                                3. Giấy phép kinh doanh (có dấu)<br>
+                                4. Chứng minh thư (hoặc Hộ chiếu) của người được cấp chữ ký điện tử<br>
+                                <br>
+                                (Đơn đăng ký, báo giá thiết bị bạn có thẻ tải về trong phần download tại trang chủ
+                                ecosys, trên báo giá có thông tin số tài khoản để thanh toán cho thẻ chữ ký số)<br>
+                                Để việc gia hạn bộ thiết bị chữ ký số có thể hoàn thành nhanh chóng, Doanh nghiệp
+                                nên chuẩn bị đủ 04 giấy tờ trên trước khi thực hiện đăng ký gia hạn.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">3. Trong thời gian đợi nhận bộ thiết bị chữ ký
+                            số, tôi muốn truyền bộ C/O thì tôi cần phải làm gì? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Trả lời: Trong khi bạn đang đợi để được cấp bộ thiết bị chữ ký số, chúng tôi sẽ
+                                hỗ trợ bạn truyền bộ C/O. Bạn cần gửi email cho chúng tôi vào địa chỉ <b>dangkyca@ecomviet.vn</b>
+                                với nội dung như sau:
+                                <br>
+                                <b>Tiêu đề: Đề nghị truyền giúp bộ C/O</b>
+                                <br>
+                                Nội dung gồm:
+                                <br>
+                                + Tên công ty
+                                <br>
+                                + Tên đăng nhập và mật khẩu
+                                <br>
+                                + Số tiếp nhận của bộ hồ sơ cần ký và gửi duyệt
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">4. Mã pin thiết bị chữ ký số của tôi bị khóa,
+                            tôi cần phải làm gì? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Bạn cần gửi email cho chúng tôi vào địa chỉ dangkyca@ecomviet.vn với nội dung như
+                                sau:
+                                <br>
+                                <b>Tiêu đề: Đề nghị reset mã pin thiết bị chữ ký số</b>
+                                <br>
+                                <b>Nội dung gồm:</b>
+                                <br>
+                                + Tên công ty
+                                <br>
+                                + Mã số thuế
+                                <br>
+                                + Số ngẫu nhiên<br>
+                                Số ngẫu nhiên sẽ xuất hiện sau khi click vào nút <b>Phát sinh</b> trong <b>MOIT-Card
+                                    Manager/Cấu hình/Mở khóa mã pin</b><br>
+                                <br>
+                                <img src="http://res.ecosys.gov.vn/Images/hs01.jpg" alt=""><br>
+                                <b>Lưu ý</b>: Không rút thiết bị chữ ký số trong khi chưa nhận được mã UC qua email
+                                phản hồi.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">5. Lỗi <b>“Mã số thuế đã có trong cơ sở dữ liệu”</b>
+                            , khi tôi đăng ký thông tin tài khoản trên hệ thống Ecosys? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Bạn cần gửi email cho chúng tôi vào địa chỉ: <b>dangkyca@ecomviet.vn</b> với nội
+                                dung như sau:
+                                <br>
+                                <b>Tiêu đề: Hỗ trợ lỗi “Mã số thuế đã có trong cơ sở dữ liệu”</b>
+                                <br>
+                                <b>Nội dung gồm:</b><br>
+                                1. Tên doanh nghiệp;<br>
+                                2. Mã số thuế;<br>
+                                3. Giấy phép kinh doanh (có dấu)<br>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">6. Tôi đã cài đặt phần mềm chữ ký điện tử nhưng
+                            vẫn không ký duyệt được, tôi cần phải khắc phục thế nào? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Chi tiết xem <a href="http://ecosys.gov.vn/Homepage/NewsDetail.aspx?CateAlias=tin-tuc&amp;DocId=32" target="_blank" style="color: Blue; font-weight: bold;">tại đây</a>
+                                <br>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">7. Tôi đã đăng ký tài khoản trên trang eCoSys,
+                            trong bao lâu thì tài khoản sẽ được xét duyệt? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Tài khoản của bạn sẽ được các phòng Xuất nhập khẩu khu vực nơi đăng ký xét duyệt
+                                trong vòng 24h.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">8. Tài khoản trên trang eCoSys của tôi bị khóa,
+                            tôi phải làm thế nào? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Trong trường hợp này, bạn vào mục <b>“Quên mật khẩu”</b>, tải <b>mẫu giấy đề nghị cấp
+                                    lại mật khẩu rồi ký</b>, đóng dấu của người có thẩm quyền, scan và gửi vào email
+                                <b>dangkyca@ecomviet.vn</b> với <b>Tiêu đề: Đề nghị cấp lại mật khẩu để được cấp lại
+                                    mật khẩu.</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">9. Số tiếp nhận khác số C/O như thế nào? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                <b>Số tiếp nhận</b> là số sau khi khai và lưu tạm hồ sơ cũng như là số sau khi Giám
+                                đốc doanh nghiệp đã ký điện tử. Số tiếp nhận có dạng: <b>DNxxxxxxx</b>. Ví dụ: DN1234567
+                                <br>
+                                <b>Số C/O</b> là số được phòng Xuất nhập khẩu cấp sau khi xét duyệt bộ C/O. Số C/O
+                                có dạng: <b>VN-AA YY/PP/XXXXX</b>. Ví dụ:VN-JP 15/02/12345
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">10. Trước đây, tôi đã xin C/O giấy ở phòng Xuất
+                            nhập khẩu khu vực. Vậy khi tham gia khai báo C/O điện tử, tôi có cần phải nộp Hồ
+                            sơ thương nhân về Phòng Xuất nhập khẩu khu vực nữa không? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Đối với doanh nghiệp đã xin cấp C/O giấy, doanh nghiệp không phải nộp Hồ sơ thương
+                                nhân về phòng Xuất nhập khẩu khu vực nữa.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">11. Tôi muốn thay đổi địa chỉ của công ty hoặc
+                            địa chỉ email hoặc số điện thoại. Tôi cần phải làm thủ tục như thế nào? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Bạn dùng tài khoản của doanh nghiệp đăng nhập vào hệ thống. Chọn mục <b>Doanh nghiệp</b>,
+                                chọn <b>Chỉnh sửa Hồ sơ DN</b>, nhấp đúp chuột vào <b>Tên của công ty</b>, ấn nút
+                                <b>Sửa</b>. Sau khi thay đổi xong thông tin, bạn ấn nút <b>Lưu</b>.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <a href="#" class="faq-item-question">12. Tôi muốn thay đổi Loại hình DN hoặc Tên doanh
+                            nghiệp hoặc Mã số thuế hoặc Phòng quản lý Xuất nhập khẩu. Tôi cần phải làm thủ tục
+                            như thế nào? </a>
+                        <div class="faq-item-answer">
+                            <p class="faq-item-answer-title">
+                                Trả lời:</p>
+                            <p class="faq-item-answer-content">
+                                Trong trường này, doanh nghiệp cần phải soạn thảo một bản thông báo, ký và đóng
+                                dấu, gửi cho phòng Xuất nhập khẩu khu vực. Sau khi đã có ý kiến của phòng Xuất nhập
+                                khẩu khu vực trên văn bản, doanh nghiệp scan gửi qua email <b>dangkyca@ecomviet.vn</b>,
+                                chúng tôi sẽ chỉnh sửa hồ sơ trên hệ thống cho doanh nghiệp.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            
+    </ons-card>
+    <script>
+                           
+    </script>
+    <style>
+        .clear{clear: both;}
+        .faq-item{border: 1px dashed #cdcdcd;border-radius: 5px;padding: 10px; margin-bottom: 10px;}
+        .faq-item img{max-width: 100%;}
+        .faq-item-question {
+            text-decoration: none;
+        	color: #1C59A8;
+        	font-weight: bold;
+            margin-bottom: 10px;
+            padding-left: 48px;
+            background: url(img/question-normal.png) no-repeat 0% 0%;
+            line-height: 24px;
+            display: inline-block;
+        } 
+        .faq-item-question:hover { 
+        	text-decoration: underline;
+        }
+        .faq-item-question.open {
+        	color: #F30;
+        	background: url(img/question-hover.png) no-repeat 0% 0%;
+        }
+        .faq-item-answer {
+        	display: none;
+            background-color: #eaeaea;
+            padding: 10px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+        }
+        .faq-item-answer-title {
+            color: #ff6c00;
+        	font-weight: bold;
+            text-decoration: underline;
+        }
+        .faq-item-answer.open {
+        	display: block;	
+        }
+        .faq-item-answer-content {
+            
+        }
+    </style>   
+  </ons-page>
+</template>
+
+
+<style>
+  ons-splitter-side[animation=overlay] {
+    border-left: 1px solid #bbb;
+  }
+</style>
+
+
+</body>
+</html>
